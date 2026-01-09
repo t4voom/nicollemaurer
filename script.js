@@ -413,74 +413,33 @@ function configurarSidebarCarrinho() {
     
     // Botão de checkout
     const checkoutBtn = document.getElementById('checkoutBtn');
-    if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', function() {
-            if (carrinho.length === 0) {
-                alert('Seu carrinho está vazio!');
-                return;
-            }
-            
-            const total = carrinho.reduce((soma, item) => soma + (item.price * item.quantidade), 0);
-            const totalItens = carrinho.reduce((soma, item) => soma + item.quantidade, 0);
-            
-            let resumo = '🛒 RESUMO DA COMPRA 🛒\n\n';
-            carrinho.forEach(item => {
-                resumo += `• ${item.name}\n`;
-                resumo += `  Quantidade: ${item.quantidade}\n`;
-                resumo += `  Preço: R$${(item.price * item.quantidade).toFixed(2).replace('.', ',')}\n\n`;
-            });
-            
-            resumo += `═══════════════════════════\n`;
-            resumo += `Total de itens: ${totalItens}\n`;
-            resumo += `Valor total: R$${total.toFixed(2).replace('.', ',')}\n`;
-            resumo += `═══════════════════════════\n\n`;
-            resumo += `Deseja finalizar a compra?`;
-            
-            if (confirm(resumo)) {
-                alert('✅ Compra finalizada com sucesso!\n\nObrigado por escolher a CARU. Um e-mail de confirmação será enviado em breve.');
-                
-                // Limpar carrinho
-                carrinho = [];
-                localStorage.removeItem('carrinho_caru');
-                
-                // Atualizar UI
-                atualizarContadorCarrinho();
-                renderizarCarrinho();
-                atualizarTotalCarrinho();
-                fecharCarrinho();
-                
-                // Feedback visual
-                const notification = document.createElement('div');
-                notification.innerHTML = `
-                    <div style="
-                        position: fixed;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        background: #000;
-                        color: white;
-                        padding: 30px 40px;
-                        border-radius: 12px;
-                        z-index: 10001;
-                        text-align: center;
-                        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-                        animation: fadeIn 0.3s ease;
-                    ">
-                        <i class="fas fa-check-circle" style="font-size: 48px; color: #4CAF50; margin-bottom: 15px;"></i>
-                        <h3 style="margin: 0 0 10px 0; color: white;">Compra Finalizada!</h3>
-                        <p style="margin: 0; opacity: 0.8;">Obrigado por escolher a CARU</p>
-                    </div>
-                `;
-                document.body.appendChild(notification);
-                
-                setTimeout(() => {
-                    notification.style.opacity = '0';
-                    notification.style.transition = 'opacity 0.3s';
-                    setTimeout(() => notification.remove(), 300);
-                }, 2000);
-            }
-        });
-    }
+if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', function() {
+        if (carrinho.length === 0) {
+            alert('Seu carrinho está vazio!');
+            return;
+        }
+        
+        // Preparar mensagem para WhatsApp
+        const mensagemWhatsApp = prepararMensagemWhatsApp();
+        
+        // Número do WhatsApp (altere para o seu número)
+        const numeroWhatsApp = '5547996805038'; // Sem o +
+        
+        // Criar link do WhatsApp
+        const whatsappLink = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagemWhatsApp)}`;
+        
+        // Abrir WhatsApp em nova aba
+        window.open(whatsappLink, '_blank');
+        
+        // Opcional: Limpar carrinho após redirecionamento
+        // carrinho = [];
+        // localStorage.removeItem('carrinho_caru');
+        // atualizarContadorCarrinho();
+        // renderizarCarrinho();
+        // atualizarTotalCarrinho();
+    });
+}
 }
 
 // Mostrar notificação de produto adicionado
@@ -512,46 +471,314 @@ function mostrarNotificacao(nomeProduto) {
     }, 3000);
 }
 
+// Preparar mensagem para WhatsApp
+function prepararMensagemWhatsApp() {
+    const totalItens = carrinho.reduce((soma, item) => soma + item.quantidade, 0);
+    const total = carrinho.reduce((soma, item) => soma + (item.price * item.quantidade), 0);
+    
+    let mensagem = ` *PEDIDO CARU* \n\n`;
+    mensagem += `Olá! Gostaria de fazer um pedido:\n\n`;
+    
+    carrinho.forEach(item => {
+        const precoTotalItem = (item.price * item.quantidade).toFixed(2).replace('.', ',');
+        mensagem += `• *${item.name}*\n`;
+        mensagem += `  Quantidade: ${item.quantidade}\n`;
+        mensagem += `  Preço unitário: R$${item.price.toFixed(2).replace('.', ',')}\n`;
+        mensagem += `  Subtotal: R$${precoTotalItem}\n\n`;
+    });
+    
+    mensagem += `═══════════════════════════\n`;
+    mensagem += `*Total de itens:* ${totalItens}\n`;
+    mensagem += `*Valor total:* R$${total.toFixed(2).replace('.', ',')}\n`;
+    mensagem += `═══════════════════════════\n\n`;
+    mensagem += `Por favor, confirme a disponibilidade dos produtos e informe as formas de pagamento e entrega.\n\n`;
+    mensagem += `Meus dados:\n`;
+    mensagem += `Nome: _________\n`;
+    mensagem += `Endereço: _________\n`;
+    mensagem += `Telefone: _________\n\n`;
+    mensagem += `Aguardo seu retorno! `;
+    
+    return mensagem;
+}
+
+// Limpar carrinho após redirecionamento para WhatsApp
+function limparCarrinhoAposWhatsApp() {
+    // Pequeno atraso para garantir que o WhatsApp abriu
+    setTimeout(() => {
+        carrinho = [];
+        localStorage.removeItem('carrinho_caru');
+        atualizarContadorCarrinho();
+        renderizarCarrinho();
+        atualizarTotalCarrinho();
+        fecharCarrinho();
+        
+        // Feedback ao usuário
+        const notification = document.createElement('div');
+        notification.innerHTML = `
+            <div style="
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #000;
+                color: white;
+                padding: 30px 40px;
+                border-radius: 12px;
+                z-index: 10001;
+                text-align: center;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+                animation: fadeIn 0.3s ease;
+            ">
+                <i class="fas fa-whatsapp" style="font-size: 48px; color: #25D366; margin-bottom: 15px;"></i>
+                <h3 style="margin: 0 0 10px 0; color: white;">Pedido Enviado!</h3>
+                <p style="margin: 0; opacity: 0.8;">Redirecionando para o WhatsApp...</p>
+            </div>
+        `;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.3s';
+            setTimeout(() => notification.remove(), 300);
+        }, 2000);
+    }, 500);
+}
+
+// Botão de checkout atualizado
+const checkoutBtn = document.getElementById('checkoutBtn');
+if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', function() {
+        if (carrinho.length === 0) {
+            alert('Seu carrinho está vazio!');
+            return;
+        }
+        
+        // Preparar mensagem para WhatsApp
+        const mensagemWhatsApp = prepararMensagemWhatsApp();
+        
+        // Número do WhatsApp (sem o +)
+        const numeroWhatsApp = '5547996805038';
+        
+        // Criar link do WhatsApp
+        const whatsappLink = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagemWhatsApp)}`;
+        
+        // Abrir WhatsApp em nova aba
+        window.open(whatsappLink, '_blank');
+        
+        // Limpar carrinho e dar feedback
+        limparCarrinhoAposWhatsApp();
+    });
+}
+
 // ========== FUNÇÕES EXISTENTES DO SITE ==========
 
-// Gerar estrelas ✦ dinamicamente
+// ========== FUNÇÃO PARA GERAR ESTRELAS ✦ ==========
+
 function generateStars() {
     const starsWrapper = document.getElementById('starsWrapper');
     if (!starsWrapper) return;
     
-    const starCount = 30;
-    const wrapperWidth = starsWrapper.offsetWidth;
-    const wrapperHeight = starsWrapper.offsetHeight;
-    
+    // Limpar estrelas existentes
     starsWrapper.innerHTML = '';
     
+    // Criar 3 camadas de estrelas com diferentes velocidades
     for (let layer = 0; layer < 3; layer++) {
         const starLayer = document.createElement('div');
         starLayer.className = 'star-layer';
-        starLayer.style.animation = `slideStars ${20 + layer * 5}s linear infinite`;
-        starLayer.style.animationDelay = `${layer * 2}s`;
         
-        for (let i = 0; i < starCount; i++) {
+        // Número de estrelas por camada
+        const starsCount = layer === 0 ? 8 : layer === 1 ? 12 : 15;
+        
+        for (let i = 0; i < starsCount; i++) {
             const star = document.createElement('span');
             star.className = 'star-particle';
             
-            const size = Math.random();
-            if (size < 0.3) star.classList.add('small');
-            else if (size > 0.7) star.classList.add('large');
+            // Aleatorizar tamanho
+            const sizeRand = Math.random();
+            if (sizeRand < 0.3) star.classList.add('small');
+            else if (sizeRand > 0.7) star.classList.add('large');
+            else star.classList.add('medium');
             
+            // Adicionar emoji de estrela
             star.innerHTML = '✦';
-            star.style.animationDelay = `${Math.random() * 4}s`;
-            star.style.opacity = 0.1 + Math.random() * 0.3;
+            
+            // Aleatorizar atraso da animação
+            const delay = Math.random() * 5;
+            star.style.animationDelay = `${delay}s`;
+            
+            // Posicionar aleatoriamente na camada
             star.style.position = 'absolute';
-            star.style.top = `${Math.random() * wrapperHeight}px`;
-            star.style.left = `${Math.random() * wrapperWidth}px`;
-            star.style.transform = `rotate(${Math.random() * 360}deg)`;
+            star.style.left = `${(i / starsCount) * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
             
             starLayer.appendChild(star);
         }
         
+        // Configurar animação da camada
+        const duration = 20 + layer * 5;
+        const delay = layer * 3;
+        starLayer.style.animation = `slideStars ${duration}s linear infinite`;
+        starLayer.style.animationDelay = `${delay}s`;
+        
         starsWrapper.appendChild(starLayer);
     }
+}
+
+// ========== CHAMAR A FUNÇÃO QUANDO O DOM CARREGAR ==========
+
+// Gerar estrelas ✦ dinamicamente
+// ========== GERAR ESTRELAS ✦ MELHORADO ==========
+
+function generateStars() {
+    const starsWrapper = document.getElementById('starsWrapper');
+    if (!starsWrapper) return;
+    
+    // Limpar estrelas existentes
+    starsWrapper.innerHTML = '';
+    
+    // Configurações para cada camada
+    const layers = [
+        { stars: 25, speed: 15, yPos: 30, delay: 0, reverse: false, sizeRange: [0.8, 1.2] },    // Camada frontal
+        { stars: 35, speed: 25, yPos: 50, delay: 1, reverse: false, sizeRange: [0.6, 1.0] },    // Camada do meio
+        { stars: 45, speed: 35, yPos: 70, delay: 2, reverse: true, sizeRange: [0.4, 0.8] },     // Camada traseira
+        { stars: 20, speed: 20, yPos: 20, delay: 0.5, reverse: false, sizeRange: [0.7, 1.1] },  // Camada diagonal 1
+        { stars: 30, speed: 30, yPos: 80, delay: 1.5, reverse: true, sizeRange: [0.5, 0.9] },   // Camada diagonal 2
+    ];
+    
+    layers.forEach((layer, layerIndex) => {
+        const starLayer = document.createElement('div');
+        starLayer.className = 'star-layer';
+        
+        // Criar estrelas para esta camada
+        for (let i = 0; i < layer.stars; i++) {
+            const star = document.createElement('span');
+            
+            // Determinar tamanho aleatório baseado na camada
+            const sizeRand = Math.random();
+            let sizeClass = 'medium';
+            
+            if (sizeRand < 0.2) sizeClass = 'tiny';
+            else if (sizeRand < 0.4) sizeClass = 'small';
+            else if (sizeRand < 0.6) sizeClass = 'medium';
+            else if (sizeRand < 0.8) sizeClass = 'large';
+            else sizeClass = 'xlarge';
+            
+            star.className = `star-particle ${sizeClass}`;
+            star.innerHTML = '✦';
+            
+            // Aleatorizar atraso da animação
+            const twinkleDelay = Math.random() * 8;
+            star.style.animationDelay = `${twinkleDelay}s`;
+            
+            // Posicionar aleatoriamente
+            const leftPos = Math.random() * 200 - 50; // -50% a 150% para entrada/saída suave
+            const topPos = layer.yPos + (Math.random() * 20 - 10); // Variação vertical
+            
+            star.style.position = 'absolute';
+            star.style.left = `${leftPos}%`;
+            star.style.top = `${topPos}%`;
+            
+            // Rotação inicial aleatória
+            const initialRotation = Math.random() * 360;
+            star.style.transform = `rotate(${initialRotation}deg)`;
+            
+            // Aleatorizar timing da animação de cintilação
+            const twinkleDuration = 3 + Math.random() * 4;
+            star.style.animationDuration = `${twinkleDuration}s`;
+            
+            // Aleatorizar timing function
+            const timingFunctions = ['ease', 'ease-in', 'ease-out', 'ease-in-out', 'cubic-bezier(0.4, 0, 0.2, 1)'];
+            star.style.animationTimingFunction = timingFunctions[Math.floor(Math.random() * timingFunctions.length)];
+            
+            starLayer.appendChild(star);
+        }
+        
+        // Configurar animação da camada
+        const animationName = layer.reverse ? 'slideStarsReverse' : 'slideStars';
+        starLayer.style.animation = `${animationName} ${layer.speed}s linear infinite`;
+        starLayer.style.animationDelay = `${layer.delay}s`;
+        starLayer.style.top = `${layer.yPos}%`;
+        starLayer.style.zIndex = 10 - layerIndex; // Camadas mais próximas têm z-index maior
+        
+        starsWrapper.appendChild(starLayer);
+    });
+    
+    console.log(`✨ Geradas ${layers.reduce((sum, layer) => sum + layer.stars, 0)} estrelas em ${layers.length} camadas`);
+}
+
+// Função para otimizar performance em dispositivos móveis
+function optimizeStarsForMobile() {
+    const starsWrapper = document.getElementById('starsWrapper');
+    if (!starsWrapper) return;
+    
+    const isMobile = window.innerWidth <= 768;
+    
+    // Reduzir animações em dispositivos móveis
+    if (isMobile) {
+        const layers = starsWrapper.querySelectorAll('.star-layer');
+        layers.forEach((layer, index) => {
+            // Reduzir opacidade geral em mobile
+            layer.style.opacity = '0.7';
+            
+            // Pausar animação se não estiver visível
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        layer.style.animationPlayState = 'running';
+                    } else {
+                        layer.style.animationPlayState = 'paused';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            observer.observe(layer);
+        });
+    }
+}
+
+// Inicializar estrelas com otimização
+function initStars() {
+    generateStars();
+    
+    // Regenerar estrelas quando a janela for redimensionada
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            generateStars();
+            optimizeStarsForMobile();
+        }, 250);
+    });
+    
+    // Otimizar para mobile
+    optimizeStarsForMobile();
+    
+    // Recarregar estrelas periodicamente para evitar problemas de renderização
+    setInterval(() => {
+        generateStars();
+    }, 300000); // A cada 5 minutos
+}
+
+function initStars() {
+    generateStars();
+    
+    // Regenerar estrelas quando a janela for redimensionada
+    window.addEventListener('resize', generateStars);
+}
+
+// Adicione esta linha à função init() existente:
+function init() {
+    console.log('🚀 Inicializando CARU...');
+    
+    // Inicializar carrinho (código existente)
+    atualizarContadorCarrinho();
+    configurarBotoesCarrinho();
+    // ... resto do código existente ...
+    
+    // Adicionar esta linha:
+    initStars(); // ← Inicializar estrelas
+    
+    // ... resto do código existente ...
 }
 
 // Header scroll effect
@@ -821,3 +1048,4 @@ if (document.readyState === 'loading') {
 } else {
     init();
 }
+
