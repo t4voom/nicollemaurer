@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crochê Artesanal - Loja Minimalista</title>
+    <meta name="description" content="Loja online minimalista de produtos de crochê artesanal feitos com amor e dedicação. Peças únicas em design clean.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'preto': '#0A0A0A',
+                        'cinza-escuro': '#1A1A1A',
+                        'cinza-medio': '#2D2D2D',
+                        'cinza-claro': '#4A4A4A',
+                        'cinza-suave': '#7A7A7A',
+                        'branco': '#FFFFFF',
+                        'branco-acinzentado': '#F8F8F8',
+                        'off-white': '#F0F0F0'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'montserrat': ['Montserrat', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-in-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'slide-down': 'slideDown 0.6s ease-out',
+                        'pulse-gentle': 'pulseGentle 3s infinite',
+                        'float-subtle': 'floatSubtle 4s ease-in-out infinite',
+                        'loader-spin': 'loaderSpin 1s linear infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'border-glow': 'borderGlow 3s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        pulseGentle: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.85' }
+                        },
+                        floatSubtle: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-8px)' }
+                        },
+                        loaderSpin: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' }
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px rgba(255,255,255,0.1)' },
+                            '100%': { boxShadow: '0 0 15px rgba(255,255,255,0.3)' }
+                        },
+                        borderGlow: {
+                            '0%, 100%': { borderColor: 'rgba(255,255,255,0.1)' },
+                            '50%': { borderColor: 'rgba(255,255,255,0.3)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 100%);
+            color: #F0F0F0;
+        }
+        
+        .header-shadow {
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+        }
+        
+        .btn-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+        }
+        
+        .cart-item-enter {
+            animation: slideUp 0.4s ease-out;
+        }
+        
+        .loader {
+            border-top-color: #7A7A7A;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(90deg, #FFFFFF 0%, #B0B0B0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .border-gradient {
+            border-image: linear-gradient(90deg, #4A4A4A 0%, #7A7A7A 100%) 1;
+        }
+        
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #4A4A4A 50%, transparent 100%);
+        }
+        
+        .image-grayscale {
+            filter: grayscale(100%) contrast(1.1);
+            transition: filter 0.5s ease;
+        }
+        
+        .image-grayscale:hover {
+            filter: grayscale(50%) contrast(1.1);
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* Animações personalizadas */
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typewriter 3s steps(40, end);
+        }
+        
+        /* Efeito de brilho sutil em textos */
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Modal com vidro fosco */
+        .glass-effect {
+            background: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Linha decorativa */
+        .decorative-line {
+            height: 2px;
+            width: 60px;
+            background: linear-gradient(90deg, transparent 0%, #7A7A7A 50%, transparent 100%);
+            margin: 1rem auto;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-branco">
+    <!-- Loader Minimalista -->
+    <div id="loader" class="fixed inset-0 bg-preto z-50 flex items-center justify-center transition-opacity duration-500">
+        <div class="text-center">
+            <div class="w-16 h-16 border-2 border-cinza-suave border-t-branco rounded-full animate-loader-spin mx-auto mb-4"></div>
+            <p class="font-montserrat text-xl text-cinza-suave animate-pulse-gentle">Carregando</p>
+        </div>
+    </div>
+
+    <!-- Header Fixo -->
+    <header class="fixed w-full bg-cinza-escuro/90 backdrop-blur-md header-shadow z-40 animate-slide-down">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <!-- Logo Minimalista -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full border border-cinza-suave flex items-center justify-center animate-border-glow">
+                        <i class="fas fa-heart text-branco text-xl"></i>
+                    </div>
+                    <h1 class="font-montserrat text-2xl text-branco">Crochê<span class="text-cinza-suave">Artesanal</span></h1>
+                </div>
+
+                <!-- Menu Desktop -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#inicio" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 hover-lift">Início</a>
+                    <a href="#produtos" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 hover-lift">Produtos</a>
+                    <a href="#sobre" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 hover-lift">Sobre</a>
+                    <a href="#contato" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 hover-lift">Contato</a>
+                    <button id="cartButton" class="relative hover-lift">
+                        <i class="fas fa-shopping-bag text-branco text-xl hover:text-cinza-suave transition-colors duration-300"></i>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-branco text-preto text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">0</span>
+                    </button>
+                </nav>
+
+                <!-- Menu Mobile -->
+                <button id="mobileMenuButton" class="md:hidden text-branco hover-lift">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Menu Mobile Expandido -->
+            <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4 border-t border-cinza-medio pt-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#inicio" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 py-2">Início</a>
+                    <a href="#produtos" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 py-2">Produtos</a>
+                    <a href="#sobre" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 py-2">Sobre</a>
+                    <a href="#contato" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 py-2">Contato</a>
+                    <button id="cartButtonMobile" class="flex items-center space-x-2 text-branco py-2 hover-lift">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Carrinho</span>
+                        <span id="cartCountMobile" class="bg-branco text-preto text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="pt-16">
+        <!-- Seção Inicial -->
+        <section id="inicio" class="relative overflow-hidden">
+            <div class="container mx-auto px-4 py-12 md:py-24">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div class="animate-slide-up">
+                        <div class="decorative-line"></div>
+                        <h2 class="font-montserrat text-4xl md:text-5xl text-branco mb-6 text-glow">
+                            <span class="text-gradient">Feito com precisão</span><br>e dedicação
+                        </h2>
+                        <p class="font-inter text-lg text-cinza-suave mb-8 leading-relaxed">
+                            Cada ponto é uma expressão de técnica, cada peça uma história de paciência. 
+                            Descubra nossa coleção exclusiva de crochê artesanal, onde minimalismo e artesanato se encontram.
+                        </p>
+                        <button id="verColecao" class="bg-transparent border-2 border-branco hover:bg-branco hover:text-preto text-branco font-inter font-medium py-3 px-8 rounded-none btn-hover transition-all duration-300 animate-pulse-gentle">
+                            Ver Coleção <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                    <div class="relative animate-float-subtle">
+                        <div class="relative z-10 overflow-hidden rounded-lg">
+                            <img src="https://picsum.photos/500/400?random=1&grayscale" alt="Artesã trabalhando no crochê" class="w-full image-grayscale rounded-lg shadow-2xl">
+                        </div>
+                        <div class="absolute -top-4 -right-4 w-32 h-32 border border-cinza-suave rounded-full opacity-20 animate-border-glow"></div>
+                        <div class="absolute -bottom-4 -left-4 w-24 h-24 border border-cinza-suave rounded-full opacity-20 animate-border-glow"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-divider"></div>
+        </section>
+
+        <!-- Seção Produtos -->
+        <section id="produtos" class="py-16 bg-cinza-escuro/50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <div class="decorative-line"></div>
+                    <h2 class="font-montserrat text-3xl md:text-4xl text-branco mb-4 text-glow">Nossos Produtos</h2>
+                    <p class="font-inter text-cinza-suave max-w-2xl mx-auto">Peças únicas e especiais, com design limpo e foco na qualidade do material e acabamento.</p>
+                </div>
+
+                <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Produtos serão carregados via JavaScript -->
+                </div>
+            </div>
+            <div class="section-divider mt-16"></div>
+        </section>
+
+        <!-- Seção Sobre -->
+        <section id="sobre" class="py-16">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <img src="https://picsum.photos/500/400?random=2&grayscale" alt="Artesã sorrindo com suas criações" class="w-full image-grayscale rounded-lg shadow-2xl">
+                    </div>
+                    <div>
+                        <div class="decorative-line"></div>
+                        <h2 class="font-montserrat text-3xl md:text-4xl text-branco mb-6 text-glow">Minha História</h2>
+                        <div class="space-y-6">
+                            <p class="font-inter text-cinza-suave leading-relaxed">Tudo começou nas tardes silenciosas na casa da minha avó, onde aprendi os primeiros pontos. O crochê sempre foi mais do que um hobby - era uma meditação, uma forma de concentração.</p>
+                            <p class="font-inter text-cinza-suave leading-relaxed">Hoje, transformo fios em peças que valorizam a simplicidade. Cada criação é pensada com minimalismo, desde a escolha dos materiais até o último ponto. Acredito que o artesanato deve focar na essência.</p>
+                            <p class="font-inter text-cinza-suave leading-relaxed">Meu objetivo é levar um pouco dessa simplicidade para sua casa, através de peças que valorizam a forma e a função.</p>
+                        </div>
+                        <div class="mt-10 flex items-center space-x-4">
+                            <div class="w-12 h-12 rounded-full border border-cinza-suave flex items-center justify-center animate-border-glow">
+                                <i class="fas fa-heart text-branco"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-montserrat text-lg text-branco">Ana Clara</h4>
+                                <p class="font-inter text-cinza-suave text-sm">Artesã e fundadora</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section-divider mt-16"></div>
+        </section>
+
+        <!-- Seção Contato -->
+        <section id="contato" class="py-16 bg-cinza-escuro/50">
+            <div class="container mx-auto px-4">
+                <div class="max-w-2xl mx-auto">
+                    <div class="text-center mb-12">
+                        <div class="decorative-line"></div>
+                        <h2 class="font-montserrat text-3xl md:text-4xl text-branco mb-4 text-glow">Entre em Contato</h2>
+                        <p class="font-inter text-cinza-suave">Tem alguma dúvida ou encomenda especial? Entre em contato!</p>
+                    </div>
+
+                    <form id="contactForm" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block font-inter text-cinza-suave mb-2">Nome *</label>
+                                <input type="text" id="name" required class="w-full px-4 py-3 bg-transparent border border-cinza-medio text-branco rounded-none focus:outline-none focus:border-branco focus:bg-cinza-escuro transition-all duration-300">
+                            </div>
+                            <div>
+                                <label for="email" class="block font-inter text-cinza-suave mb-2">E-mail *</label>
+                                <input type="email" id="email" required class="w-full px-4 py-3 bg-transparent border border-cinza-medio text-branco rounded-none focus:outline-none focus:border-branco focus:bg-cinza-escuro transition-all duration-300">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="message" class="block font-inter text-cinza-suave mb-2">Mensagem *</label>
+                            <textarea id="message" rows="5" required class="w-full px-4 py-3 bg-transparent border border-cinza-medio text-branco rounded-none focus:outline-none focus:border-branco focus:bg-cinza-escuro transition-all duration-300"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-transparent border-2 border-branco hover:bg-branco hover:text-preto text-branco font-inter font-medium py-3 px-8 rounded-none btn-hover transition-all duration-300">
+                            Enviar Mensagem <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-cinza-escuro py-12 border-t border-cinza-medio">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-10 h-10 rounded-full border border-cinza-suave flex items-center justify-center">
+                            <i class="fas fa-heart text-branco"></i>
+                        </div>
+                        <h3 class="font-montserrat text-xl text-branco">Crochê<span class="text-cinza-suave">Artesanal</span></h3>
+                    </div>
+                    <p class="font-inter text-cinza-suave text-sm">Artesanato minimalista para quem valoriza o essencial.</p>
+                </div>
+                <div>
+                    <h4 class="font-montserrat text-lg text-branco mb-6">Links Rápidos</h4>
+                    <div class="flex flex-col space-y-3">
+                        <a href="#inicio" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 text-sm hover-lift">Início</a>
+                        <a href="#produtos" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 text-sm hover-lift">Produtos</a>
+                        <a href="#sobre" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 text-sm hover-lift">Sobre</a>
+                        <a href="#contato" class="font-inter text-cinza-suave hover:text-branco transition-colors duration-300 text-sm hover-lift">Contato</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-montserrat text-lg text-branco mb-6">Contato</h4>
+                    <div class="space-y-3">
+                        <p class="font-inter text-cinza-suave text-sm flex items-center">
+                            <i class="fas fa-envelope text-branco mr-3"></i>
+                            contato@crocheartesanal.com
+                        </p>
+                        <p class="font-inter text-cinza-suave text-sm flex items-center">
+                            <i class="fas fa-phone text-branco mr-3"></i>
+                            (11) 99999-9999
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-cinza-medio mt-12 pt-8 text-center">
+                <p class="font-inter text-cinza-suave text-sm">© 2024 Crochê Artesanal Minimalista. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Botão Flutuante WhatsApp -->
+    <a href="https://wa.me/5547996805038?text=Olá! Gostaria de saber mais sobre seus produtos de crochê minimalista." target="_blank" class="fixed bottom-6 right-6 bg-preto border border-branco text-branco w-14 h-14 rounded-full flex items-center justify-center shadow-xl hover-lift z-30 animate-glow">
+        <i class="fab fa-whatsapp text-2xl"></i>
+    </a>
+
+    <!-- Modal Carrinho -->
+    <div id="cartModal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
+        <div class="glass-effect rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden animate-slide-up">
+            <div class="flex items-center justify-between p-6 border-b border-cinza-medio">
+                <h3 class="font-montserrat text-2xl text-branco">Seu Carrinho</h3>
+                <button id="closeCart" class="text-cinza-suave hover:text-branco transition-colors duration-300 hover-lift">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto max-h-[60vh]">
+                <div id="cartItems" class="space-y-4">
+                    <!-- Itens do carrinho serão carregados aqui -->
+                    <div id="emptyCartMessage" class="text-center py-12">
+                        <div class="w-20 h-20 border border-cinza-medio rounded-full flex items-center justify-center mx-auto mb-6">
+                            <i class="fas fa-shopping-bag text-cinza-suave text-3xl"></i>
+                        </div>
+                        <p class="font-inter text-cinza-suave">Seu carrinho está vazio</p>
+                    </div>
+                </div>
+                
+                <div id="cartSummary" class="mt-8 pt-8 border-t border-cinza-medio hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="font-inter text-cinza-suave">Subtotal</span>
+                        <span id="cartSubtotal" class="font-montserrat text-xl text-branco">R$ 0,00</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="font-inter text-cinza-suave">Frete</span>
+                        <span id="cartShipping" class="font-inter text-cinza-suave">Calculado no checkout</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-8 pt-4 border-t border-cinza-medio">
+                        <span class="font-inter text-lg font-medium text-branco">Total</span>
+                        <span id="cartTotal" class="font-montserrat text-2xl text-branco">R$ 0,00</span>
+                    </div>
+                    
+                    <button id="checkoutButton" class="w-full bg-transparent border-2 border-branco hover:bg-branco hover:text-preto text-branco font-inter font-medium py-3 px-8 rounded-none btn-hover transition-all duration-300">
+                        Finalizar Compra <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Checkout -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
+        <div class="glass-effect rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden animate-slide-up">
+            <div class="flex items-center justify-between p-6 border-b border-cinza-medio">
+                <h3 class="font-montserrat text-2xl text-branco">Finalizar Pedido</h3>
+                <button id="closeCheckout" class="text-cinza-suave hover:text-branco transition-colors duration-300 hover-lift">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto max-h-[60vh]">
+                <form id="checkoutForm" class="space-y-8">
+                    <div>
+                        <h4 class="font-montserrat text-lg text-branco mb-6">Informações Pessoais</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="checkoutName" class="block font-inter text-cinza-suave mb-2">Nome Completo *</label>
+                                <input type="text" id="checkoutName" required class="w-full px-4 py-3 bg-transparent border border-cinza-medio text-branco rounded-none focus:outline-none focus:border-branco focus:bg-cinza-escuro transition-all duration-300">
+                            </div>
+                            <div>
+                                <label for="checkoutPhone" class="block font-inter text-cinza-suave mb-2">Telefone *</label>
+                                <input type="tel" id="checkoutPhone" required class="w-full px-4 py-3 bg-transparent border border-cinza-medio text-branco rounded-none focus:outline-none focus:border-branco focus:bg-cinza-escuro transition-all duration-300">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-montserrat text-lg text-branco mb-6">Endereço de Entrega</h4>
+                        <div class="space-y-6">
+                            <div>
+                                <label for="checkoutAddress" class="block font-inter text-cinza-suave mb-2">Endereço *</label>
+                                <input type="text" id="checkoutAddress" required class="w-full px-4 py-3 bg-transparent border border-cinza-medio text-branco rounded-none focus:outline-none focus:border-branco focus:bg-cinza-escuro transition-all duration-300">
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label for="checkoutCity" class="block font-inter text-cinza-suave mb-2">Cidade *</label>
+                                    <input type="text" id="checkoutCity" required class="w-full px-4 py-3 bg-transparent border border-cinza-medio text-branco rounded-none focus:outline-none focus:border-branco focus:bg-cinza-escuro transition-all duration-300">
+                                </div>
+                                <div>
+                                    <label for="checkoutState" class="block font-inter text-cinza-suave mb-2">Estado *</label>
+                                    <input type="text" id="checkoutState" required class="w-full px-4 py-3 bg-transparent border border-cinza-medio text-branco rounded-none focus:outline-none focus:border-branco focus:bg-cinza-escuro transition-all duration-300">
+                                </div>
+                                <div>
+                                    <label for="checkoutZip" class="block font-inter text-cinza-suave mb-2">CEP *</label>
+                                    <input type="text" id="checkoutZip" required class="w-full px-4 py-3 bg-transparent border border-cinza-medio text-branco rounded-none focus:outline-none focus:border-branco focus:bg-cinza-escuro transition-all duration-300">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="checkoutSummary" class="border-t border-cinza-medio pt-8">
+                        <h4 class="font-montserrat text-lg text-branco mb-6">Resumo do Pedido</h4>
+                        <div id="checkoutItems" class="space-y-3 mb-6">
+                            <!-- Itens do checkout serão carregados aqui -->
+                        </div>
+                        <div class="flex justify-between items-center pt-6 border-t border-cinza-medio">
+                            <span class="font-montserrat text-xl text-branco">Total</span>
+                            <span id="checkoutTotal" class="font-montserrat text-2xl text-branco">R$ 0,00</span>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" id="confirmOrder" class="w-full bg-transparent border-2 border-branco hover:bg-branco hover:text-preto text-branco font-inter font-medium py-3 px-8 rounded-none btn-hover transition-all duration-300">
+                        Confirmar Pedido <i class="fas fa-check ml-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Sucesso -->
+    <div id="successModal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
+        <div class="glass-effect rounded-lg w-full max-w-md p-8 text-center animate-slide-up">
+            <div class="w-20 h-20 border border-cinza-suave rounded-full flex items-center justify-center mx-auto mb-8 animate-border-glow">
+                <i class="fas fa-check text-branco text-3xl"></i>
+            </div>
+            <h3 class="font-montserrat text-2xl text-branco mb-6">Pedido Confirmado!</h3>
+            <p class="font-inter text-cinza-suave mb-8">Obrigada pela sua compra! Em breve entraremos em contato para combinar os detalhes da entrega.</p>
+            <button id="closeSuccess" class="bg-transparent border-2 border-branco hover:bg-branco hover:text-preto text-branco font-inter font-medium py-3 px-8 rounded-none btn-hover transition-all duration-300">
+                Continuar Comprando
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos produtos (mantidos os mesmos, apenas atualizando imagens para preto e branco)
+        const products = [
+            {
+                "id": 1,
+                "name": "Cachecol Minimalista",
+                "description": "Cachecol limpo feito com fio super macio, perfeito para os dias frios.",
+                "price": 89.90,
+                "image": "https://picsum.photos/300/300?random=3&grayscale",
+                "category": "Acessórios"
+            },
+            {
+                "id": 2,
+                "name": "Bolsa Minimalista",
+                "description": "Bolsa prática e elegante, ideal para o dia a dia.",
+                "price": 129.90,
+                "image": "https://picsum.photos/300/300?random=4&grayscale",
+                "category": "Bolsas"
+            },
+            {
+                "id": 3,
+                "name": "Tapete Redondo",
+                "description": "Tapete decorativo para deixar sua casa mais minimalista.",
+                "price": 159.90,
+                "image": "https://picsum.photos/300/300?random=5&grayscale",
+                "category": "Decoração"
+            },
+            {
+                "id": 4,
+                "name": "Conjunto Bebê",
+                "description": "Conjunto completo com sapatinhos e touca para presentear.",
+                "price": 119.90,
+                "image": "https://picsum.photos/300/300?random=6&grayscale",
+                "category": "Bebê"
+            },
+            {
+                "id": 5,
+                "name": "Puf Minimalista",
+                "description": "Puf decorativo e confortável para sua sala.",
+                "price": 199.90,
+                "image": "https://picsum.photos/300/300?random=7&grayscale",
+                "category": "Decoração"
+            },
+            {
+                "id": 6,
+                "name": "Blusa Minimalista",
+                "description": "Blusa leve e arejada para os dias quentes.",
+                "price": 139.90,
+                "image": "https://picsum.photos/300/300?random=8&grayscale",
+                "category": "Vestuário"
+            },
+            {
+                "id": 7,
+                "name": "Necessaire Minimalista",
+                "description": "Necessaire prática para organizar seus pertences.",
+                "price": 69.90,
+                "image": "https://picsum.photos/300/300?random=9&grayscale",
+                "category": "Acessórios"
+            },
+            {
+                "id": 8,
+                "name": "Cesta de Pães",
+                "description": "Cesta decorativa para sua cozinha ou mesa de jantar.",
+                "price": 79.90,
+                "image": "https://picsum.photos/300/300?random=10&grayscale",
+                "category": "Decoração"
+            }
+        ];
+
+        // Carrinho
+        let cart = JSON.parse(localStorage.getItem("croche_cart_minimalist")) || [];
+
+        // Elementos DOM
+        const loader = document.getElementById("loader");
+        const mobileMenuButton = document.getElementById("mobileMenuButton");
+        const mobileMenu = document.getElementById("mobileMenu");
+        const cartButton = document.getElementById("cartButton");
+        const cartButtonMobile = document.getElementById("cartButtonMobile");
+        const cartModal = document.getElementById("cartModal");
+        const closeCart = document.getElementById("closeCart");
+        const cartItems = document.getElementById("cartItems");
+        const emptyCartMessage = document.getElementById("emptyCartMessage");
+        const cartSummary = document.getElementById("cartSummary");
+        const cartCount = document.getElementById("cartCount");
+        const cartCountMobile = document.getElementById("cartCountMobile");
+        const checkoutButton = document.getElementById("checkoutButton");
+        const checkoutModal = document.getElementById("checkoutModal");
+        const closeCheckout = document.getElementById("closeCheckout");
+        const checkoutForm = document.getElementById("checkoutForm");
+        const successModal = document.getElementById("successModal");
+        const closeSuccess = document.getElementById("closeSuccess");
+        const verColecao = document.getElementById("verColecao");
+        const contactForm = document.getElementById("contactForm");
+
+        // Formatar preço
+        function formatPrice(price) {
+            return new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL"
+            }).format(price);
+        }
+
+        // Atualizar contador do carrinho
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            cartCountMobile.textContent = totalItems;
+        }
+
+        // Salvar carrinho no localStorage
+        function saveCart() {
+            localStorage.setItem("croche_cart_minimalist", JSON.stringify(cart));
+            updateCartCount();
+        }
+
+        // Adicionar produto ao carrinho
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: 1
+                });
+            }
+            
+            saveCart();
+            updateCartModal();
+            showNotification("Produto adicionado ao carrinho!");
+        }
+
+        // Remover produto do carrinho
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            saveCart();
+            updateCartModal();
+        }
+
+        // Atualizar quantidade no carrinho
+        function updateQuantity(productId, newQuantity) {
+            if (newQuantity < 1) {
+                removeFromCart(productId);
+                return;
+            }
+            
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity = newQuantity;
+                saveCart();
+                updateCartModal();
+            }
+        }
+
+        // Atualizar modal do carrinho
+        function updateCartModal() {
+            cartItems.innerHTML = "";
+            
+            if (cart.length === 0) {
+                emptyCartMessage.classList.remove("hidden");
+                cartSummary.classList.add("hidden");
+                return;
+            }
+            
+            emptyCartMessage.classList.add("hidden");
+            cartSummary.classList.remove("hidden");
+            
+            let subtotal = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                const cartItem = document.createElement("div");
+                cartItem.className = "flex items-center space-x-4 p-4 bg-cinza-medio/30 rounded-lg cart-item-enter";
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg image-grayscale">
+                    <div class="flex-1">
+                        <h4 class="font-inter font-medium text-branco">${item.name}</h4>
+                        <p class="font-inter text-cinza-suave text-sm mt-1">${formatPrice(item.price)}</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="updateQuantity(${item.id}, ${item.quantity - 1})" class="w-8 h-8 rounded-none border border-cinza-suave text-branco hover:bg-branco hover:text-preto transition-colors duration-300 hover-lift">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <span class="font-inter font-medium w-8 text-center text-branco">${item.quantity}</span>
+                        <button onclick="updateQuantity(${item.id}, ${item.quantity + 1})" class="w-8 h-8 rounded-none border border-cinza-suave text-branco hover:bg-branco hover:text-preto transition-colors duration-300 hover-lift">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-montserrat text-lg text-branco">${formatPrice(itemTotal)}</p>
+                        <button onclick="removeFromCart(${item.id})" class="text-cinza-suave hover:text-branco transition-colors duration-300 mt-2 hover-lift">
+                            <i class="fas fa-trash text-sm"></i>
+                        </button>
+                    </div>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+            
+            document.getElementById("cartSubtotal").textContent = formatPrice(subtotal);
+            document.getElementById("cartTotal").textContent = formatPrice(subtotal);
+        }
+
+        // Atualizar checkout
+        function updateCheckout() {
+            const checkoutItems = document.getElementById("checkoutItems");
+            checkoutItems.innerHTML = "";
+            
+            let total = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const checkoutItem = document.createElement("div");
+                checkoutItem.className = "flex justify-between items-center py-3 border-b border-cinza-medio/50 last:border-b-0";
+                checkoutItem.innerHTML = `
+                    <div>
+                        <p class="font-inter text-branco">${item.name} <span class="text-cinza-suave">x${item.quantity}</span></p>
+                    </div>
+                    <p class="font-inter text-branco">${formatPrice(itemTotal)}</p>
+                `;
+                checkoutItems.appendChild(checkoutItem);
+            });
+            
+            document.getElementById("checkoutTotal").textContent = formatPrice(total);
+        }
+
+        // Mostrar notificação
+        function showNotification(message) {
+            const notification = document.createElement("div");
+            notification.className = "fixed top-20 right-4 glass-effect border-l-4 border-branco shadow-2xl rounded-r-lg px-6 py-4 z-50 animate-slide-up";
+            notification.innerHTML = `
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-check-circle text-branco"></i>
+                    <p class="font-inter text-branco">${message}</p>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Carregar produtos
+        function loadProducts() {
+            const productsGrid = document.getElementById("productsGrid");
+            productsGrid.innerHTML = "";
+            
+            products.forEach(product => {
+                const productCard = document.createElement("div");
+                productCard.className = "bg-cinza-escuro/70 border border-cinza-medio rounded-lg overflow-hidden card-hover";
+                productCard.innerHTML = `
+                    <div class="relative overflow-hidden">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover image-grayscale transition-transform duration-700 hover:scale-110" loading="lazy">
+                        <span class="absolute top-4 left-4 bg-preto/80 text-branco font-inter text-xs px-3 py-2 rounded-none">${product.category}</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-montserrat text-xl text-branco mb-3">${product.name}</h3>
+                        <p class="font-inter text-cinza-suave text-sm mb-6">${product.description}</p>
+                        <div class="flex items-center justify-between">
+                            <span class="font-montserrat text-2xl text-branco">${formatPrice(product.price)}</span>
+                            <button onclick="addToCart(${product.id})" class="bg-transparent border border-branco hover:bg-branco hover:text-preto text-branco font-inter font-medium py-2 px-6 rounded-none btn-hover transition-all duration-300">
+                                <i class="fas fa-shopping-bag mr-3"></i>Adicionar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Event Listeners
+        document.addEventListener("DOMContentLoaded", () => {
+            // Esconder loader
+            setTimeout(() => {
+                loader.style.opacity = "0";
+                setTimeout(() => {
+                    loader.style.display = "none";
+                }, 500);
+            }, 800);
+            
+            // Carregar produtos
+            loadProducts();
+            updateCartCount();
+            
+            // Menu mobile
+            mobileMenuButton.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
+                mobileMenuButton.querySelector("i").classList.toggle("fa-bars");
+                mobileMenuButton.querySelector("i").classList.toggle("fa-times");
+            });
+            
+            // Abrir carrinho
+            cartButton.addEventListener("click", () => {
+                updateCartModal();
+                cartModal.classList.remove("hidden");
+                document.body.style.overflow = "hidden";
+            });
+            
+            cartButtonMobile.addEventListener("click", () => {
+                updateCartModal();
+                cartModal.classList.remove("hidden");
+                mobileMenu.classList.add("hidden");
+                document.body.style.overflow = "hidden";
+            });
+            
+            // Fechar carrinho
+            closeCart.addEventListener("click", () => {
+                cartModal.classList.add("hidden");
+                document.body.style.overflow = "auto";
+            });
+            
+            // Fechar modal ao clicar fora
+            cartModal.addEventListener("click", (e) => {
+                if (e.target === cartModal) {
+                    cartModal.classList.add("hidden");
+                    document.body.style.overflow = "auto";
+                }
+            });
+            
+            // Abrir checkout
+            checkoutButton.addEventListener("click", () => {
+                updateCheckout();
+                cartModal.classList.add("hidden");
+                checkoutModal.classList.remove("hidden");
+            });
+            
+            // Fechar checkout
+            closeCheckout.addEventListener("click", () => {
+                checkoutModal.classList.add("hidden");
+                document.body.style.overflow = "auto";
+            });
+            
+            checkoutModal.addEventListener("click", (e) => {
+                if (e.target === checkoutModal) {
+                    checkoutModal.classList.add("hidden");
+                    document.body.style.overflow = "auto";
+                }
+            });
+            
+            // Finalizar pedido
+            checkoutForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                
+                // Simular processamento
+                const confirmButton = document.getElementById("confirmOrder");
+                const originalText = confirmButton.innerHTML;
+                confirmButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i> Processando...';
+                confirmButton.disabled = true;
+                
+                setTimeout(() => {
+                    checkoutModal.classList.add("hidden");
+                    successModal.classList.remove("hidden");
+                    
+                    // Limpar carrinho
+                    cart = [];
+                    saveCart();
+                    updateCartCount();
+                    
+                    // Resetar botão
+                    confirmButton.innerHTML = originalText;
+                    confirmButton.disabled = false;
+                    
+                    // Resetar formulário
+                    checkoutForm.reset();
+                }, 2000);
+            });
+            
+            // Fechar sucesso
+            closeSuccess.addEventListener("click", () => {
+                successModal.classList.add("hidden");
+                document.body.style.overflow = "auto";
+            });
+            
+            successModal.addEventListener("click", (e) => {
+                if (e.target === successModal) {
+                    successModal.classList.add("hidden");
+                    document.body.style.overflow = "auto";
+                }
+            });
+            
+            // Botão ver coleção
+            verColecao.addEventListener("click", () => {
+                document.getElementById("produtos").scrollIntoView({ behavior: "smooth" });
+            });
+            
+            // Formulário de contato
+            contactForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                
+                const submitButton = contactForm.querySelector("button[type='submit']");
+                const originalText = submitButton.innerHTML;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i> Enviando...';
+                submitButton.disabled = true;
+                
+                setTimeout(() => {
+                    showNotification("Mensagem enviada com sucesso! Entraremos em contato em breve.");
+                    contactForm.reset();
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                }, 1500);
+            });
+            
+            // Smooth scroll para links internos
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute("href");
+                    if (targetId === "#") return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: "smooth" });
+                        mobileMenu.classList.add("hidden");
+                        mobileMenuButton.querySelector("i").classList.add("fa-bars");
+                        mobileMenuButton.querySelector("i").classList.remove("fa-times");
+                    }
+                });
+            });
+            
+            // Animações ao scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("animate-fade-in");
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll("section > div").forEach(section => {
+                observer.observe(section);
+            });
+            
+            // Adicionar efeito de digitação ao título principal
+            const mainTitle = document.querySelector("#inicio h2");
+            if (mainTitle) {
+                const text = mainTitle.innerHTML;
+                mainTitle.innerHTML = "";
+                mainTitle.classList.add("typewriter");
+                setTimeout(() => {
+                    mainTitle.innerHTML = text;
+                    mainTitle.classList.remove("typewriter");
+                }, 100);
+            }
+        });
+
+        // Expor funções para o escopo global
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+    </script>
+</body>
+</html>
