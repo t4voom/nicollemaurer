@@ -15,6 +15,51 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- CARRINHO SIDEBAR -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3 class="cart-title">Seu Carrinho</h3>
+            <button class="cart-close" id="cartClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="cart-items" id="cartItems">
+            <!-- Itens serão inseridos via JavaScript -->
+            <div class="cart-empty" id="cartEmpty">
+                <i class="fas fa-shopping-bag"></i>
+                <p>Seu carrinho está vazio</p>
+            </div>
+        </div>
+        
+        <div class="cart-summary">
+            <div class="cart-totals">
+                <div class="cart-total-row">
+                    <span>Subtotal</span>
+                    <span class="cart-subtotal" id="cartSubtotal">R$0,00</span>
+                </div>
+                <div class="cart-total-row">
+                    <span>Frete</span>
+                    <span class="cart-shipping">Calculado no checkout</span>
+                </div>
+                <div class="cart-total-row total">
+                    <span>Total</span>
+                    <span class="cart-total" id="cartTotal">R$0,00</span>
+                </div>
+            </div>
+            
+            <button class="btn-checkout" id="checkoutBtn" disabled>
+                Finalizar Compra
+            </button>
+            
+            <p class="cart-continue">
+                <a href="#" id="continueShopping">Continuar comprando</a>
+            </p>
+        </div>
+    </div>
+
     <!-- HEADER -->
     <header class="header" id="header">
         <a href="#" class="logo">CARU</a>
@@ -27,7 +72,7 @@
         </nav>
         
         <div class="header-actions">
-            <div class="cart-icon">
+            <div class="cart-icon" id="cartIcon">
                 <i class="fas fa-shopping-bag"></i>
                 <span class="cart-count">0</span>
             </div>
@@ -56,7 +101,7 @@
         
         <div class="products-grid">
             <!-- Produto 1 -->
-            <div class="product-card">
+            <div class="product-card" data-id="prod-1">
                 <div class="product-image-container">
                     <span class="product-badge">🔥 #1 Mais Vendido</span>
                     <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Case Classic Black" class="product-image">
@@ -67,12 +112,14 @@
                     <div class="product-price">
                         <span class="price-current">R$98,00</span>
                     </div>
-                    <button class="btn-buy">Comprar Agora</button>
+                    <button class="btn-add-to-cart">
+                        <i class="fas fa-shopping-bag"></i> Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
             
             <!-- Produto 2 -->
-            <div class="product-card">
+            <div class="product-card" data-id="prod-2">
                 <div class="product-image-container">
                     <span class="product-badge">⭐ Top Avaliação</span>
                     <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Alça Premium" class="product-image">
@@ -83,12 +130,14 @@
                     <div class="product-price">
                         <span class="price-current">R$228,00</span>
                     </div>
-                    <button class="btn-buy">Comprar Agora</button>
+                    <button class="btn-add-to-cart">
+                        <i class="fas fa-shopping-bag"></i> Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
             
             <!-- Produto 3 -->
-            <div class="product-card">
+            <div class="product-card" data-id="prod-3">
                 <div class="product-image-container">
                     <span class="product-badge">⚡ Em Alta</span>
                     <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Case Urban" class="product-image">
@@ -99,12 +148,14 @@
                     <div class="product-price">
                         <span class="price-current">R$138,00</span>
                     </div>
-                    <button class="btn-buy">Comprar Agora</button>
+                    <button class="btn-add-to-cart">
+                        <i class="fas fa-shopping-bag"></i> Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
             
             <!-- Produto 4 -->
-            <div class="product-card">
+            <div class="product-card" data-id="prod-4">
                 <div class="product-image-container">
                     <span class="product-badge">💎 Exclusivo</span>
                     <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Alça Diamond" class="product-image">
@@ -115,7 +166,9 @@
                     <div class="product-price">
                         <span class="price-current">R$358,00</span>
                     </div>
-                    <button class="btn-buy">Comprar Agora</button>
+                    <button class="btn-add-to-cart">
+                        <i class="fas fa-shopping-bag"></i> Adicionar ao Carrinho
+                    </button>
                 </div>
             </div>
         </div>
@@ -273,109 +326,135 @@
         </div>
     </div>
 
-        <!-- IMAGE + QUERIDINHOS -->
-    <section class="image-favorites" id="queridinhos">
-        <div class="favorites-container">
-            <div class="favorites-image-side">
-                <img src="https://images.unsplash.com/photo-1605236453806-6ff36851218e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Produto CARU" class="favorites-image">
-                <div class="favorites-image-overlay"></div>
-            </div>
-            <div class="favorites-side">
-                <h2 class="favorites-title">Os queridinhos ♡</h2>
-                <p class="favorites-subtitle">Os produtos mais amados pelos nossos clientes</p>
-                
-                <div class="favorites-list">
-                    <!-- Favorito 1 -->
-                    <div class="favorite-item">
-                        <div class="favorite-image-icon">
-                            <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Case Classic Black" class="favorite-thumbnail">
-                            <div class="favorite-icon-overlay">
-                                <i class="fas fa-crown"></i>
-                            </div>
+   <!-- Substitua toda a seção dos QUERIDINHOS por esta versão corrigida -->
+
+<!-- IMAGE + QUERIDINHOS -->
+<section class="image-favorites" id="queridinhos">
+    <div class="favorites-container">
+        <div class="favorites-image-side">
+            <img src="https://images.unsplash.com/photo-1605236453806-6ff36851218e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Produto CARU" class="favorites-image">
+            <div class="favorites-image-overlay"></div>
+        </div>
+        <div class="favorites-side">
+            <h2 class="favorites-title">Os queridinhos ♡</h2>
+            <p class="favorites-subtitle">Os produtos mais amados pelos nossos clientes</p>
+            
+            <div class="favorites-list">
+                <!-- Favorito 1 - Usando IDs únicos -->
+                <div class="favorite-item" data-id="fav-1">
+                    <div class="favorite-image-icon">
+                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Case Classic Black" class="favorite-thumbnail">
+                        <div class="favorite-icon-overlay">
+                            <i class="fas fa-crown"></i>
                         </div>
-                        <div class="favorite-content">
+                    </div>
+                    <div class="favorite-content">
+                        <div class="favorite-header">
                             <h3 class="favorite-name">Case Classic Black</h3>
-                            <p class="favorite-description">O clássico que nunca sai de moda. Mais de 5.000 unidades vendidas.</p>
-                            <div class="favorite-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                                <span class="rating-text">4.9/5</span>
-                            </div>
+                            <span class="favorite-price">R$98,00</span>
+                        </div>
+                        <p class="favorite-description">O clássico que nunca sai de moda. Mais de 5.000 unidades vendidas.</p>
+                        <div class="favorite-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="rating-text">4.9/5</span>
+                        </div>
+                        <button class="btn-add-to-cart favorite-btn">
+                            <i class="fas fa-shopping-bag"></i> Adicionar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Favorito 2 -->
+                <div class="favorite-item" data-id="fav-2">
+                    <div class="favorite-image-icon">
+                        <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Alça Premium" class="favorite-thumbnail">
+                        <div class="favorite-icon-overlay">
+                            <i class="fas fa-gem"></i>
                         </div>
                     </div>
-                    
-                    <!-- Favorito 2 -->
-                    <div class="favorite-item">
-                        <div class="favorite-image-icon">
-                            <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Alça Premium" class="favorite-thumbnail">
-                            <div class="favorite-icon-overlay">
-                                <i class="fas fa-gem"></i>
-                            </div>
-                        </div>
-                        <div class="favorite-content">
+                    <div class="favorite-content">
+                        <div class="favorite-header">
                             <h3 class="favorite-name">Alça Premium</h3>
-                            <p class="favorite-description">Design sofisticado que combina com qualquer ocasião.</p>
-                            <div class="favorite-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span class="rating-text">5.0/5</span>
-                            </div>
+                            <span class="favorite-price">R$228,00</span>
+                        </div>
+                        <p class="favorite-description">Design sofisticado que combina com qualquer ocasião.</p>
+                        <div class="favorite-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span class="rating-text">5.0/5</span>
+                        </div>
+                        <button class="btn-add-to-cart favorite-btn">
+                            <i class="fas fa-shopping-bag"></i> Adicionar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Favorito 3 -->
+                <div class="favorite-item" data-id="fav-3">
+                    <div class="favorite-image-icon">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Case Urban" class="favorite-thumbnail">
+                        <div class="favorite-icon-overlay">
+                            <i class="fas fa-heart"></i>
                         </div>
                     </div>
-                    
-                    <!-- Favorito 3 -->
-                    <div class="favorite-item">
-                        <div class="favorite-image-icon">
-                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Case Urban" class="favorite-thumbnail">
-                            <div class="favorite-icon-overlay">
-                                <i class="fas fa-heart"></i>
-                            </div>
-                        </div>
-                        <div class="favorite-content">
+                    <div class="favorite-content">
+                        <div class="favorite-header">
                             <h3 class="favorite-name">Case Urban</h3>
-                            <p class="favorite-description">Perfeito para o dia a dia na cidade. Resistente e estiloso.</p>
-                            <div class="favorite-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <span class="rating-text">4.8/5</span>
-                            </div>
+                            <span class="favorite-price">R$138,00</span>
+                        </div>
+                        <p class="favorite-description">Perfeito para o dia a dia na cidade. Resistente e estiloso.</p>
+                        <div class="favorite-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span class="rating-text">4.8/5</span>
+                        </div>
+                        <button class="btn-add-to-cart favorite-btn">
+                            <i class="fas fa-shopping-bag"></i> Adicionar
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Favorito 4 -->
+                <div class="favorite-item" data-id="fav-4">
+                    <div class="favorite-image-icon">
+                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Alça Diamond" class="favorite-thumbnail">
+                        <div class="favorite-icon-overlay">
+                            <i class="fas fa-bolt"></i>
                         </div>
                     </div>
-                    
-                    <!-- Favorito 4 -->
-                    <div class="favorite-item">
-                        <div class="favorite-image-icon">
-                            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80" alt="Alça Diamond" class="favorite-thumbnail">
-                            <div class="favorite-icon-overlay">
-                                <i class="fas fa-bolt"></i>
-                            </div>
-                        </div>
-                        <div class="favorite-content">
+                    <div class="favorite-content">
+                        <div class="favorite-header">
                             <h3 class="favorite-name">Alça Diamond</h3>
-                            <p class="favorite-description">Edição limitada com acabamento premium em diamante.</p>
-                            <div class="favorite-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                                <span class="rating-text">4.7/5</span>
-                            </div>
+                            <span class="favorite-price">R$358,00</span>
                         </div>
+                        <p class="favorite-description">Edição limitada com acabamento premium em diamante.</p>
+                        <div class="favorite-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="rating-text">4.7/5</span>
+                        </div>
+                        <button class="btn-add-to-cart favorite-btn">
+                            <i class="fas fa-shopping-bag"></i> Adicionar
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- FOOTER -->
     <footer class="footer">
